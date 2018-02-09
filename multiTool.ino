@@ -94,12 +94,14 @@ void loop() {
         int i = 0;
         int pin = 0;
         int pinCnt = 0;
-        CircuitPlayground.setPixelColor(pin, 255, 0, 0);
+        LED_OFF();
+        LED_ON(5);
+        CircuitPlayground.setPixelColor(pin, 255, 255, 255);
         while(i != SIZE) {
           if(CircuitPlayground.rightButton()) {
             while(CircuitPlayground.rightButton()) {}
-            CircuitPlayground.setPixelColor(pin, 255, 0, 0);
             pin++;
+            CircuitPlayground.setPixelColor(pin - 1, 255, 0, 255);
             CircuitPlayground.setPixelColor(pin, 255, 255, 255);
             if(pin > 9) { pin = 0; }
           }
@@ -114,7 +116,8 @@ void loop() {
           Keyboard.print(PWD[getIndex]);
           LED_ON(4);
           CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
-        } else { LED_ON(4); LED_OFF(); LED_ON(4); }
+        } else { LED_OFF(); LED_ON(4); LED_OFF(); LED_ON(4); }
+        CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
       } else {
         if(getIndex > 6) { Keyboard.write(KEY_ESC); }
         Keyboard.print(VIM[getIndex]);
