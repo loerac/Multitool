@@ -85,11 +85,10 @@ void loop() {
     } else if(CircuitPlayground.leftButton()) {
       while(CircuitPlayground.leftButton()) {}
       if(curState) {
-        /* 
-         * Currently working on to make it password protected before it prints out the password
+        /*
          * Adafruit does a really cool way of doing this:
          * https://learn.adafruit.com/circuit-playground-password-vault/password-vault-coding
-         * I am working on making a sequence of LED's user has to push
+         * I don't have copper tape so I just used a pin sequence with the two buttons
          */
         int i = 0;
         int pin = 0;
@@ -97,6 +96,8 @@ void loop() {
         LED_OFF();
         LED_ON(5);
         CircuitPlayground.setPixelColor(pin, 255, 255, 255);
+        
+        // This is not the best way to store a password
         while(i != SIZE) {
           if(CircuitPlayground.rightButton()) {
             while(CircuitPlayground.rightButton()) {}
@@ -107,7 +108,7 @@ void loop() {
           }
           if(CircuitPlayground.leftButton()) {
             while(CircuitPlayground.leftButton()) {}
-            if(PIN[pin] == PIN[i]) { pinCnt++; }
+            if(pin == PIN[i]) { pinCnt++; }
             i++;
           }
         }
