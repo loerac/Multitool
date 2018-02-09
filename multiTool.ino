@@ -85,7 +85,7 @@ void loop() {
     } else if(CircuitPlayground.leftButton()) {
       while(CircuitPlayground.leftButton()) {}
       if(curState) {
-        /*
+         /*
          * Adafruit does a really cool way of doing this:
          * https://learn.adafruit.com/circuit-playground-password-vault/password-vault-coding
          * I don't have copper tape so I just used a pin sequence with the two buttons
@@ -97,8 +97,12 @@ void loop() {
         LED_ON(5);
         CircuitPlayground.setPixelColor(pin, 255, 255, 255);
         
-        // This is not the best way to store a password
-        while(i != SIZE) {
+        /*
+         * This is not the best way to store a password
+         * I made the while loop go until i is less and equal to SIZE
+         * This way, if anyone is looking will get thrown off with the last number entered
+         */
+        while(i <= SIZE) {
           if(CircuitPlayground.rightButton()) {
             while(CircuitPlayground.rightButton()) {}
             pin++;
@@ -115,6 +119,7 @@ void loop() {
         if(pinCnt == SIZE) {
           LED_ON(2);
           Keyboard.print(PWD[getIndex]);
+          Keyboard.write(KEY_RETURN);
           LED_ON(4);
           CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
         } else { LED_OFF(); LED_ON(4); LED_OFF(); LED_ON(4); }
