@@ -16,17 +16,19 @@ char* VIM[] = {
   ":q!"
 } ;
 
+int SIZE = 4;   // SIZE of the PIN
+int PIN[] = {0, 1, 2, 3};
 char* PWD[] = {
-  "None" ,
-  "of" ,
-  "your" ,
-  "business" ,
-  "" ,
-  "" ,
-  "" ,
-  "" ,
-  "" ,
-  ""
+  "Train" ,
+  "Drop" ,
+  "Dip" ,
+  "Drop" ,
+  "I" ,
+  "want" ,
+  "that" ,
+  "ham" ,
+  "with" ,
+  "cheese"
 } ;
 
 int vimIndex = 0;  // Current VIM index choosen
@@ -61,17 +63,11 @@ void loop() {
    * State_1 : Vim
    * State_2 : Passwords
    */
-  if(CircuitPlayground.slideSwitch() == begState) { // State_1 : VIM
-    LED_ON(2);
-    curState = 0;
-    grnColor = 255;
-    redColor = 0;
-  } else { // State_2 : PWD 
-    LED_ON(4);
-    curState = 1;
-    grnColor = 0;
-    redColor = 255;
-  }
+
+  // State_1 : VIM 
+  if(CircuitPlayground.slideSwitch() == begState) { LED_ON(2); curState = 0; grnColor = 255; redColor = 0; }
+  // State_2 : PWD 
+  else { LED_ON(4); curState = 1; grnColor = 0; redColor = 255; }
 
   // Indicate what vimIndex the user is on by making the LED white
   getIndex = (curState) ? vimIndex : pwdIndex;
@@ -88,7 +84,6 @@ void loop() {
       CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
     } else if(CircuitPlayground.leftButton()) {
       while(CircuitPlayground.leftButton()) {}
-      CircuitPlayground.setPixelColor(getIndex, 0, 0, 255);
       if(curState) {
         /* 
          * Currently working on to make it password protected before it prints out the password
@@ -96,7 +91,30 @@ void loop() {
          * https://learn.adafruit.com/circuit-playground-password-vault/password-vault-coding
          * I am working on making a sequence of LED's user has to push
          */
-        Keyboard.print(PWD[getIndex]);
+        int i = 0;
+        int pin = 0;
+        int pinCnt = 0;
+        CircuitPlayground.setPixelColor(pin, 255, 0, 0);
+        while(i != SIZE) {
+          if(CircuitPlayground.rightButton()) {
+            while(CircuitPlayground.rightButton()) {}
+            CircuitPlayground.setPixelColor(pin, 255, 0, 0);
+            pin++;
+            CircuitPlayground.setPixelColor(pin, 255, 255, 255);
+            if(pin > 9) { pin = 0; }
+          }
+          if(CircuitPlayground.leftButton()) {
+            while(CircuitPlayground.leftButton()) {}
+            if(PIN[pin] == PIN[i]) { pinCnt++; }
+            i++;
+          }
+        }
+        if(pinCnt == SIZE) {
+          LED_ON(2);
+          Keyboard.print(PWD[getIndex]);
+          LED_ON(4);
+          CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
+        } else { LED_ON(4); LED_OFF(); LED_ON(4); }
       } else {
         if(getIndex > 6) { Keyboard.write(KEY_ESC); }
         Keyboard.print(VIM[getIndex]);
