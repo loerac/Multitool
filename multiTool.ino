@@ -118,8 +118,17 @@ void loop() {
         LED_ON(5);
         CircuitPlayground.setPixelColor(pin, 255, 255, 255);
         
+<<<<<<< HEAD
         /* This is not the best way to store a password */
         while(i != SIZE) {
+=======
+        /*
+         * This is not the best way to store a password
+         * I made the while loop go until i is less and equal to SIZE
+         * This way, if anyone is looking will get thrown off with the last number entered
+         */
+        while(i <= SIZE) {
+>>>>>>> ea9638fd4dd1794c20574d83be1ec2954b04fe8e
           if(CircuitPlayground.rightButton()) {
             while(CircuitPlayground.rightButton()) {}
             pin++;
