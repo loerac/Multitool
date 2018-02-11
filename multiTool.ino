@@ -7,6 +7,7 @@
 #include<Wire.h>
 #include<SPI.h>
 #include<Keyboard.h>
+
 /*
  * Commands: Put your daily commands in CMD[]. You can use it for your
  * email(s), programming syntax, Linux commands, etc. The last three 
@@ -14,12 +15,12 @@
  * you can remove it and comment out the lines on line 138 & 144.
  */
 char* CMD[] = {
+  "chatoloera18@gmail.com" ,
+  "loerac0801@gmail.com" ,
   "#include<stdio.h>\n#include<stdlib.h>\n\nint main(int argc, char* argv[]) {\n\n\treturn 0;\n\b}" ,
   "#include<iostream>\nusing namespace std;\n\nint main(int argc, char* argv[]) {\n\n\treturn 0;\n\b}" ,
   "if(argc == 1) {\n\tprintf(\"Error: no arguments given\\n\");\nreturn 2;\n\b}\n" ,
-  "" ,
-  "" ,
-  "" ,
+  "loerac" ,
   "" ,
   ":w" ,
   ":wq" ,
@@ -33,15 +34,15 @@ char* CMD[] = {
  * and 9 is on te top right by LED #13. Store your pin in PIN[] and
  * make sure the SIZE is the same size as PIN[].
  */
-int SIZE = 4;   // SIZE of the PIN
-int PIN[] = {0, 1, 2, 3};
+int SIZE = 6;   // SIZE of the PIN
+int PIN[] = {3, 5, 7, 8, 9, 4};
 char* PWD[] = {
-  "NULL" ,
-  "NULL" ,
-  "NULL" ,
-  "NULL" ,
-  "NULL" ,
-  "NULL" ,
+  "2017AuG88!!acorn@@!" ,
+  "2017AuG88!!banana@@!" ,
+  "2017AuG88!!carrot@@!" ,
+  "2017AuG88!!grape@@!" ,
+  "2017AuG88!!@@!" ,
+  "..Fak3Pa33w0rd.." ,
   "NULL" ,
   "NULL" ,
   "NULL" ,
@@ -56,6 +57,10 @@ int curState = 0;  // Read what current state the slider is at
 int grnColor = 0;  // Used for indicating which state slider is at
 int redColor = 0;  // Used for indicating which state slider is at
 int slider = 0; 
+
+int const vimStart = 7;  // Knowing when the vim commands start
+int const gitAccnt = 5;  // Knowing where the Github username is
+int const gitPsswd = 3;  // Knowing where the Github password is
 
 void setup() {
   Keyboard.begin();
@@ -106,67 +111,77 @@ void loop() {
     else if(CircuitPlayground.leftButton()) {
       while(CircuitPlayground.leftButton()) {}
       if(curState) {
-         /*
-         * Adafruit does a really cool way of doing this:
-         * https://learn.adafruit.com/circuit-playground-password-vault/password-vault-coding
-         * I don't have copper tape so I just used a pin sequence with the two buttons
-         */
-        int i = 0;
-        int pin = 0;
-        int pinCnt = 0;
-        LED_OFF();
-        LED_ON(5);
-        CircuitPlayground.setPixelColor(pin, 255, 255, 255);
-        
-<<<<<<< HEAD
-        /* This is not the best way to store a password */
-        while(i != SIZE) {
-=======
-        /*
-         * This is not the best way to store a password
-         * I made the while loop go until i is less and equal to SIZE
-         * This way, if anyone is looking will get thrown off with the last number entered
-         */
-        while(i <= SIZE) {
->>>>>>> ea9638fd4dd1794c20574d83be1ec2954b04fe8e
-          if(CircuitPlayground.rightButton()) {
-            while(CircuitPlayground.rightButton()) {}
-            pin++;
-            CircuitPlayground.setPixelColor(pin - 1, 255, 0, 255);
-            if(pin > 9) { pin = 0; }
-            CircuitPlayground.setPixelColor(pin, 255, 255, 255);
-          }
-          if(CircuitPlayground.leftButton()) {
-            while(CircuitPlayground.leftButton()) {}
-            if(pin == PIN[i]) { pinCnt++; }
-            i++;
-          }
-        }
+         
         /* 
          * If the pin number entered is correct,
          * print out the password and press the return key
         */
-        if(pinCnt == SIZE) {
+        if(enterPin()) {
           LED_ON(2);
           Keyboard.print(PWD[getIndex]);
           Keyboard.write(KEY_RETURN);
-          LED_ON(4);
-          CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
         } 
         /* Make the LED's red if the pin is incorrect */
-        else { LED_OFF(); LED_ON(4); LED_OFF(); LED_ON(4); }
+        else { LED_OFF(); LED_ON(4); LED_OFF(); }
+        LED_ON(4); 
         CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
       } else {
         // If you aren't going to use Vim, comment this line
-        if(getIndex > 6) { Keyboard.write(KEY_ESC); }
+        if(getIndex >= vimStart) { Keyboard.write(KEY_ESC); }
         
         Keyboard.print(CMD[getIndex]);
+
+        /* 
+         * Github use, if you aren't useing this for github
+         * Comment the KEY_RETURN out and the if/else if out
+        */
+        Keyboard.write(KEY_RETURN);
+        if(getIndex == gitAccnt && enterPin()) {
+          LED_ON(2);
+          Keyboard.print(PWD[gitPsswd]);
+          Keyboard.write(KEY_RETURN);
+        } else if(getIndex == gitAccnt) { Keyboard.write(KEY_RETURN); LED_OFF(); LED_ON(4); LED_OFF(); }
+        LED_ON(2);
+        CircuitPlayground.setPixelColor(getIndex, 255, 255, 255);
         
         // If you aren't going to use Vim, comment this line
-        if(getIndex > 6) { Keyboard.write(KEY_RETURN); }
+        if(getIndex >= vimStart) { Keyboard.write(KEY_RETURN); }
       }
     }
   }  
+}
+
+bool enterPin() {
+  /*
+   * Adafruit does a really cool way of doing this:
+   * https://learn.adafruit.com/circuit-playground-password-vault/password-vault-coding
+   * I don't have copper tape so I just used a pin sequence with the two buttons
+   */
+  int i = 0;
+  int pin = 0;
+  int pinCnt = 0;
+  LED_OFF();
+  LED_ON(5);
+  CircuitPlayground.setPixelColor(pin, 255, 255, 255);
+  
+  /* This is not the best way to store a password */
+  while(i != SIZE) {
+    if(CircuitPlayground.rightButton()) {
+      while(CircuitPlayground.rightButton()) {}
+      pin++;
+      CircuitPlayground.setPixelColor(pin - 1, 255, 0, 255);
+      if(pin > 9) { pin = 0; }
+      CircuitPlayground.setPixelColor(pin, 255, 255, 255);
+    }
+    if(CircuitPlayground.leftButton()) {
+      while(CircuitPlayground.leftButton()) {}
+      if(pin == PIN[i]) { pinCnt++; }
+      i++;
+    }
+  }
+
+  if(pinCnt == SIZE) { return true; }
+  return false;
 }
 
 void LED_OFF() {
