@@ -15,12 +15,12 @@
  * you can remove it and comment out the lines on line 138 & 144.
  */
 char* CMD[] = {
-  "chatoloera18@gmail.com" ,
-  "loerac0801@gmail.com" ,
   "#include<stdio.h>\n#include<stdlib.h>\n\nint main(int argc, char* argv[]) {\n\n\treturn 0;\n\b}" ,
   "#include<iostream>\nusing namespace std;\n\nint main(int argc, char* argv[]) {\n\n\treturn 0;\n\b}" ,
   "if(argc == 1) {\n\tprintf(\"Error: no arguments given\\n\");\nreturn 2;\n\b}\n" ,
-  "loerac" ,
+  "" ,
+  "" ,
+  "" ,
   "" ,
   ":w" ,
   ":wq" ,
@@ -34,15 +34,15 @@ char* CMD[] = {
  * and 9 is on te top right by LED #13. Store your pin in PIN[] and
  * make sure the SIZE is the same size as PIN[].
  */
-int SIZE = 6;   // SIZE of the PIN
-int PIN[] = {3, 5, 7, 8, 9, 4};
+int SIZE = 4;   // SIZE of the PIN
+int PIN[] = {0, 1, 2, 3};
 char* PWD[] = {
-  "2017AuG88!!acorn@@!" ,
-  "2017AuG88!!banana@@!" ,
-  "2017AuG88!!carrot@@!" ,
-  "2017AuG88!!grape@@!" ,
-  "2017AuG88!!@@!" ,
-  "..Fak3Pa33w0rd.." ,
+  "NULL" ,
+  "NULL" ,
+  "NULL" ,
+  "NULL" ,
+  "NULL" ,
+  "NULL" ,
   "NULL" ,
   "NULL" ,
   "NULL" ,
@@ -59,8 +59,8 @@ int redColor = 0;  // Used for indicating which state slider is at
 int slider = 0; 
 
 int const vimStart = 7;  // Knowing when the vim commands start
-int const gitAccnt = 5;  // Knowing where the Github username is
-int const gitPsswd = 3;  // Knowing where the Github password is
+int const gitAccnt = 0;  // Knowing where the Github username is
+int const gitPsswd = 0;  // Knowing where the Github password is
 
 void setup() {
   Keyboard.begin();
